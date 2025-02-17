@@ -1,4 +1,4 @@
-## Unreleased
+## v0.2.0 (2025-02-17)
 
 ### ✨ Features
 
