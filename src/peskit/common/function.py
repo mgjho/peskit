@@ -5,7 +5,7 @@ import numba as nb
 import numpy as np
 import numpy.typing as npt
 
-from pes.common.constant import S2PI, TINY
+from peskit.common.constant import S2PI, TINY
 
 
 def do_convolve(

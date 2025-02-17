@@ -1,7 +1,7 @@
 import numpy as np
 
-from pes.common.distribution import bose_einstein, fermi_dirac
-from pes.common.function import do_convolve
+from peskit.common.distribution import bose_einstein, fermi_dirac
+from peskit.common.function import do_convolve
 
 
 def test_do_convolve():

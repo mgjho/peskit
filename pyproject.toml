@@ -3,10 +3,10 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pes"
+name = "peskit"
 version = "0.1.0"
 authors = [{ name = "Mingi Jho", email = "mingi.jho@kaist.ac.kr" }]
-description = "pes"
+description = "peskit"
 readme = "README.md"
 requires-python = ">=3.11"
 keywords = ["Condensed Matter Physics", "ARPES"]
@@ -41,8 +41,8 @@ dev = [
 
 
 [project.urls]
-Repository = "https://github.com/mgjho/pes.git"
-Issues = "https://github.com/mgjho/pes/issues"
+Repository = "https://github.com/mgjho/peskit.git"
+Issues = "https://github.com/mgjho/peskit/issues"
 
 [tool.commitizen]
 change_type_map = { "BREAKING CHANGE" = "💥 Breaking Changes", "feat" = "✨ Features", "fix" = "🐞 Bug Fixes", "refactor" = "♻️ Code Refactor", "perf" = "⚡️ Performance" }

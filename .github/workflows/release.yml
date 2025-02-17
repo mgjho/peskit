@@ -16,10 +16,10 @@ jobs:
       group: release
     if: |
       github.event_name == 'workflow_dispatch' &&
-      github.repository == 'mgjho/pes'
+      github.repository == 'mgjho/peskit'
     environment:
       name: pypi
-      url: https://pypi.org/p/pes
+      url: https://pypi.org/p/peskit
     permissions:
       id-token: write
       contents: write
