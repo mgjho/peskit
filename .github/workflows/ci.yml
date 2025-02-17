@@ -50,7 +50,7 @@ jobs:
 
       - name: Test with pytest with coverage
         if: matrix.python-version == '3.12'
-        run: uv run pytest -v --cov pes --junitxml=junit.xml
+        run: uv run pytest -v --cov peskit --junitxml=junit.xml
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.12'
@@ -92,7 +92,7 @@ jobs:
   changelog:
     name: Update changelog
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.repository == 'mgjho/pes'
+    if: github.event_name == 'push' && github.repository == 'mgjho/peskit'
     steps:
       - uses: actions/checkout@v4
         with:
