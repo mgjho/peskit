@@ -2,7 +2,7 @@ import numba as nb
 import numpy as np
 import numpy.typing as npt
 
-from .constants import CONST_KB, TINY
+from .constant import CONST_KB, TINY
 
 
 @nb.njit(nogil=True, cache=True)
