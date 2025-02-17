@@ -16,7 +16,7 @@ env:
 
 jobs:
   test:
-    name: Test Python ${{ matrix.python-version }} [${{ matrix.qt-api }}]
+    name: Test Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     env:
       DISPLAY: ":99.0"
@@ -24,7 +24,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
-        qt-api: ["pyqt6"]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,25 +42,24 @@ jobs:
 
       - name: Install project with all extras
         run: |
-          uv sync --all-extras --dev --group ${{ matrix.qt-api }} --upgrade
-          export QT_API=${{ matrix.qt-api }}
+          uv sync --all-extras --dev --upgrade
 
       - name: Test with pytest
-        if: matrix.python-version != '3.12' || matrix.qt-api != 'pyqt6'
+        if: matrix.python-version != '3.12'
         run: uv run pytest
 
       - name: Test with pytest with coverage
-        if: matrix.python-version == '3.12' && matrix.qt-api == 'pyqt6'
+        if: matrix.python-version == '3.12'
         run: uv run pytest -v --cov pes --junitxml=junit.xml
 
       - name: Upload coverage to Codecov
-        if: matrix.python-version == '3.12' && matrix.qt-api == 'pyqt6'
+        if: matrix.python-version == '3.12'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload test results to Codecov
-        if: ${{ matrix.python-version == '3.12' && matrix.qt-api == 'pyqt6' && !cancelled() }}
+        if: ${{ matrix.python-version == '3.12'&& !cancelled() }}
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
