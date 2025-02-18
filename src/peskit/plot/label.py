@@ -151,7 +151,7 @@ def set_label(
         values = np.array(values).flatten(order=order)
         if not (len(axlist) == len(values)):
             raise IndexError(
-                "The number of given values must match the number" " of given axes."
+                "The number of given values must match the number of given axes."
             )
 
     for i in range(len(axlist)):
