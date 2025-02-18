@@ -1,18 +1,24 @@
+import numpy as np
 import pytest
 import xarray as xr
-import numpy as np
+from lmfit import Parameters
+
 # from lmfit import ModelResult, Parameters
 from lmfit.model import ModelResult
-from lmfit import Parameters
-from peskit.fit.fermi_dirac.wrapper import calibrate_fd, fit_fd
+
 from peskit.fit.fermi_dirac.model import FermiDiracModel
+from peskit.fit.fermi_dirac.wrapper import calibrate_fd, fit_fd
+
 
 @pytest.fixture
 def data_array():
     coords_x = np.linspace(-0.1, 0.1, 100)
     coords_y = np.linspace(-0.1, 0.1, 100)
-    data = np.exp(-coords_x[:, None]**2 / 0.01) * np.exp(-coords_y[None, :]**2 / 0.01)
+    data = np.exp(-(coords_x[:, None] ** 2) / 0.01) * np.exp(
+        -(coords_y[None, :] ** 2) / 0.01
+    )
     return xr.DataArray(data, coords=[coords_x, coords_y], dims=["eV", "y"])
+
 
 @pytest.fixture
 def model_result():
@@ -22,6 +28,7 @@ def model_result():
     params.add("resolution", value=0.01)
     return ModelResult(FermiDiracModel(), params, None)
 
+
 def test_calibrate_fd(data_array, model_result):
     calibrated_da = calibrate_fd(data_array, model_result)
     assert "fermi_level_shift" in calibrated_da.attrs
@@ -30,6 +37,7 @@ def test_calibrate_fd(data_array, model_result):
     assert np.isclose(calibrated_da.attrs["fermi_level_shift"], 0.0)
     assert np.isclose(calibrated_da.attrs["temp"], 300.0)
     assert np.isclose(calibrated_da.attrs["resolution_mdc"], 0.01)
+
 
 def test_fit_fd(data_array):
     result = fit_fd(data_array, "eV")

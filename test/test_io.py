@@ -1,4 +1,3 @@
-import pytest
 import xarray as xr
 
 from peskit.io.loader import load_ibw
