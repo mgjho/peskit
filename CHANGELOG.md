@@ -1,3 +1,9 @@
+## Unreleased
+
+### ✨ Features
+
+- add shirley background removal module
+
 ## v0.3.0 (2025-02-18)
 
 ### ✨ Features
