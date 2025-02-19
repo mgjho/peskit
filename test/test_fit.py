@@ -6,7 +6,7 @@ from lmfit import Parameters
 # from lmfit import ModelResult, Parameters
 from lmfit.model import ModelResult
 
-from peskit.fit.fermi_dirac.model import FermiDiracModel
+from peskit.fit.fermi_dirac.model import FermiDiracLinbkgBroadModel
 from peskit.fit.fermi_dirac.wrapper import calibrate_fd, fit_fd
 
 
@@ -26,7 +26,7 @@ def model_result():
     params.add("center", value=0.0)
     params.add("temp", value=300.0)
     params.add("resolution", value=0.01)
-    return ModelResult(FermiDiracModel(), params, None)
+    return ModelResult(FermiDiracLinbkgBroadModel(), params, None)
 
 
 def test_calibrate_fd(data_array, model_result):
