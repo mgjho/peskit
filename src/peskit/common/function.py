@@ -8,6 +8,51 @@ import numpy.typing as npt
 from peskit.common.constant import S2PI, TINY
 
 
+def convolve(arr, kernel):
+    """Simple convolution of two arrays."""
+    npts = min(arr.size, kernel.size)
+    pad = np.ones(npts)
+    tmp = np.concatenate((pad * arr[0], arr, pad * arr[-1]))
+    out = np.convolve(tmp, kernel, mode="valid")
+    noff = int((len(out) - npts) / 2)
+    return out[noff : noff + npts]
+    
+def add_noise(
+    intensity: npt.NDArray[np.float64],
+    count: int = int(1e5),
+) -> npt.NDArray[np.float64]:
+    """
+    Add Poisson noise to the given intensity array.
+
+    Parameters
+    ----------
+    intensity : npt.NDArray[np.float64] | npt.NDArray[np.float64, np.float64] | npt.NDArray[np.float64, np.float64, np.float64]
+        The intensity array to which noise will be added. Can be a 1D, 2D, or 3D array.
+
+    count : float, optional
+        The total count to normalize the intensity to before adding noise. Default is 1e4.
+
+    Returns
+    -------
+    npt.NDArray[np.float64]
+        The intensity array with added Poisson noise.
+
+    Notes
+    -----
+    If the intensity array contains complex numbers, it will be returned unchanged.
+    """
+    if np.iscomplexobj(intensity):
+        return intensity
+    if count is not None:
+        rng = np.random.default_rng(1)
+        # Normalize the intensity to sum to 1
+        scaling_factor = float(count / intensity.sum())
+        intensity = (
+            rng.poisson(intensity * scaling_factor, size=intensity.shape)
+            / scaling_factor
+        )
+    return intensity
+
 def do_convolve(
     x: npt.NDArray[np.float64],
     func: Callable,
