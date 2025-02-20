@@ -1,14 +1,13 @@
-from peskit.sim import get_edc, get_cut
-import xrfit
 from lmfit.models import LorentzianModel
-from lmfit import CompositeModel, Model
+
 from peskit.fit.fermi_dirac.model import FermiDiracModel
-from peskit.fit.gaussian.model import GaussianConvolveModel
-from peskit.common.function import convolve
+from peskit.sim import get_cut
+
+
 # from lmfit.lineshapes import gaussian
 def test_user():
     data = get_cut()
-    data.plot()    
+    data.plot()
     model = LorentzianModel(prefix="p0_") * FermiDiracModel()
     # model = CompositeModel(model, GaussianConvolveModel(sigma=1.0), convolve)
     guess = data.fit.guess(model=model, input_core_dims="eV")

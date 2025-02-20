@@ -1,6 +1,7 @@
 import lmfit as lf
 
-from peskit.fit.fermi_dirac.func import fermi_dirac_linbkg_broad, fermi_dirac
+from peskit.fit.fermi_dirac.function import fermi_dirac, fermi_dirac_linbkg_broad
+
 
 class FermiDiracModel(lf.Model):
     """A model for the Fermi Dirac function."""
@@ -11,8 +12,10 @@ class FermiDiracModel(lf.Model):
         prefix="",
         missing="drop",
         name=None,
+        temp: float | None = None,
         **kwargs,
     ):
+        self.temp = temp
         """Defer to lmfit for initialization."""
         kwargs.update(
             {"prefix": prefix, "missing": missing, "independent_vars": independent_vars}
@@ -21,15 +24,16 @@ class FermiDiracModel(lf.Model):
 
     def guess(self, data, x=None, **kwargs):
         pars = self.make_params()
-
-        pars[f"{self.prefix}temp"].set(value=10.0, min=0, max=300.0)
+        if self.temp is None:
+            pars[f"{self.prefix}temp"].set(value=10.0, min=0, max=300.0)
+        else:
+            pars[f"{self.prefix}temp"].set(value=temp, vary=False)
         pars[f"{self.prefix}center"].set(value=0, min=-1, max=1)
 
         return lf.models.update_param_vals(pars, self.prefix, **kwargs)
 
     __init__.__doc__ = lf.models.COMMON_INIT_DOC
     guess.__doc__ = lf.models.COMMON_GUESS_DOC
-
 
 
 class FermiDiracLinbkgBroadModel(lf.Model):

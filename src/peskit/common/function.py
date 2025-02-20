@@ -5,18 +5,29 @@ import numba as nb
 import numpy as np
 import numpy.typing as npt
 
-from peskit.common.constant import S2PI, TINY
+from peskit.common.constant import TINY
 
-
+# def convolve(arr, kernel):
+#     """Simple convolution of two arrays."""
+#     kernel = kernel / np.sum(kernel)  # Normalize kernel explicitly
+#     npts = min(arr.size, kernel.size)
+#     pad_width = len(kernel) // 2  # Half of the kernel size
+#     tmp = np.pad(arr, pad_width, mode="reflect")  # Use reflection padding
+#     out = np.convolve(tmp, kernel, mode="valid")
+#     noff = int((len(out) - npts) / 2)
+#     return out[noff : noff + npts]
 def convolve(arr, kernel):
     """Simple convolution of two arrays."""
     npts = min(arr.size, kernel.size)
     pad = np.ones(npts)
     tmp = np.concatenate((pad * arr[0], arr, pad * arr[-1]))
-    out = np.convolve(tmp, kernel, mode="valid")
+    # out = np.convolve(tmp, kernel, mode="valid")
+    out = np.convolve(tmp, kernel, mode="vaild")
     noff = int((len(out) - npts) / 2)
-    return out[noff : noff + npts]
-    
+    return out[noff : noff + npts] / np.sum(kernel)
+    # return out[noff : noff + npts]
+
+
 def add_noise(
     intensity: npt.NDArray[np.float64],
     count: int = int(1e5),
@@ -52,6 +63,7 @@ def add_noise(
             / scaling_factor
         )
     return intensity
+
 
 def do_convolve(
     x: npt.NDArray[np.float64],
