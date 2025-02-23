@@ -7,12 +7,11 @@ from peskit.fit.broadening.model import GaussianBroadeningModel
 
 
 def test_convolve():
-    center = 5.0
     x = np.linspace(-10, 10, 200)
     lor_model = LorentzianModel()
     gau_model = GaussianBroadeningModel()
     lor_b_model = CompositeModel(lor_model, gau_model, convolve)
-    lor_b = lor_b_model.eval(x=x, center=center)
+    lor_b = lor_b_model.eval(x=x, center=5.0, broadening=0.1)
     expected_values = np.array(
         [
             0.00078413,

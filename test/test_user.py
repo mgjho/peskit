@@ -1,23 +1,14 @@
-# import numpy as np
-# from lmfit.models import LorentzianModel
+from lmfit import CompositeModel
 
-# from peskit.fit.fermi_dirac.model import FermiDiracModel
-
-
-# def test_convolve():
-#     x = np.linspace(-10, 10, 300)
-#     lor_model = LorentzianModel()
-#     center = 2.0
-#     gau_model = GaussianConvolveModel(prefix="g_")
-#     lor = lor_model.eval(x=x, center=center)
+from peskit.common.function import convolve
+from peskit.fit.broadening.model import GaussianBroadeningModel
+from peskit.fit.fermi_dirac.model import FermiDiracModel
+from peskit.fit.lorentzian.model import LorentzianModel
+from peskit.sim.edc import get_edc
 
 
-# model = LorentzianModel(prefix="p0_") * FermiDiracModel()
-# model = CompositeModel(model, GaussianConvolveModel(sigma=1.0), convolve)
-# guess = data.fit.guess(model=model, input_core_dims="eV")
-
-# g_center = guess.params.get(params_name="g_center")
-# print(g_center)
-# guess.params.assign()
-# guess["g_center"].set(value=0.0, vary=False)
-# result = data.fit(model, guess, input_core_dims="eV", method="least_squares")
+def test_user():
+    edc = get_edc()
+    model = LorentzianModel(prefix="p_") * FermiDiracModel(prefix="f_")
+    model = CompositeModel(model, GaussianBroadeningModel(), convolve)
+    fit_result = model.fit(x=edc.eV, data=edc, method="least_squares")

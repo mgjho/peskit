@@ -1,5 +1,7 @@
 import lmfit as lf
+import numpy as np
 
+from peskit.common.constant import TINY
 from peskit.fit.broadening.function import gaussian
 
 
@@ -21,6 +23,10 @@ class GaussianBroadeningModel(lf.Model):
         )
         self.resolution = resolution
         super().__init__(gaussian, **kwargs)
+        self._set_paramhints_prefix()
+
+    def _set_paramhints_prefix(self):
+        self.set_param_hint("resolution", value=1e-2, min=TINY, max=0.5)
 
     def guess(self, data, x=None, **kwargs):
         pars = self.make_params()
@@ -28,7 +34,7 @@ class GaussianBroadeningModel(lf.Model):
         if self.resolution is not None:
             pars[f"{self.prefix}resolution"].set(value=self.resolution, vary=False)
         else:
-            pars[f"{self.prefix}resolution"].set(value=1.0, min=1e-4, max=100.0)
+            pars[f"{self.prefix}resolution"].set(value=1e-1, min=TINY, max=0.1)
         # pars[f"{self.prefix}amplitude"].set(value=1.0, vary=False)
         return lf.models.update_param_vals(pars, self.prefix, **kwargs)
 

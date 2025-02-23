@@ -1,4 +1,5 @@
 import lmfit as lf
+import numpy as np
 
 from peskit.fit.fermi_dirac.function import fermi_dirac, fermi_dirac_linbkg_broad
 
@@ -21,13 +22,18 @@ class FermiDiracModel(lf.Model):
             {"prefix": prefix, "missing": missing, "independent_vars": independent_vars}
         )
         super().__init__(fermi_dirac, **kwargs)
+        self._set_paramhints_prefix()
+
+    def _set_paramhints_prefix(self):
+        self.set_param_hint("temp", value=10.0, min=0.0, max=300.0)
+        self.set_param_hint("center", value=0.0, min=-0.01, max=0.01)
 
     def guess(self, data, x=None, **kwargs):
         pars = self.make_params()
         if self.temp is None:
-            pars[f"{self.prefix}temp"].set(value=10.0, min=0, max=300.0)
+            pars[f"{self.prefix}temp"].set(value=10.0, min=0, max=300.0, vary=True)
         else:
-            pars[f"{self.prefix}temp"].set(value=temp, vary=False)
+            pars[f"{self.prefix}temp"].set(value=self.temp, vary=False)
         pars[f"{self.prefix}center"].set(value=0, min=-1, max=1)
 
         return lf.models.update_param_vals(pars, self.prefix, **kwargs)
