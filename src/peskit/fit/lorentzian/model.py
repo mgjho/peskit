@@ -1,6 +1,11 @@
 import numpy as np
 from lmfit import Model
-from lmfit.models import COMMON_INIT_DOC
+from lmfit.models import (
+    COMMON_GUESS_DOC,
+    COMMON_INIT_DOC,
+    guess_from_peak,
+    update_param_vals,
+)
 
 from peskit.fit.lorentzian.function import lorentzian
 
@@ -26,8 +31,8 @@ class LorentzianModel(Model):
 
     """
 
-    fwhm_factor = 2.0
-    height_factor = 1.0 / np.pi
+    # fwhm_factor = 2.0
+    # height_factor = 1.0 / np.pi
 
     def __init__(
         self,
@@ -60,13 +65,13 @@ class LorentzianModel(Model):
     #         addpar(name=f'{prefix}fwhm', expr=fwhm_expr(self))
     #         addpar(name=f'{prefix}height', expr=height_expr(self))
 
-    # def guess(self, data, x, negative=False, **kwargs):
-    #     """Estimate initial model parameter values from data."""
-    #     pars = guess_from_peak(self, data, x, negative, ampscale=1.25)
-    #     return update_param_vals(pars, self.prefix, **kwargs)
+    def guess(self, data, x, negative=False, **kwargs):
+        """Estimate initial model parameter values from data."""
+        pars = guess_from_peak(self, data, x, negative, ampscale=1.25)
+        return update_param_vals(pars, self.prefix, **kwargs)
 
     __init__.__doc__ = COMMON_INIT_DOC
-    # guess.__doc__ = COMMON_GUESS_DOC
+    guess.__doc__ = COMMON_GUESS_DOC
 
 
 # class LorentzianModel(Model):
