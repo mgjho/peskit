@@ -1,3 +1,5 @@
+import xrfit
+
 from peskit.fit.model import (
     BroadeningModel,
     FermiDiracModel,
@@ -6,6 +8,8 @@ from peskit.fit.model import (
 )
 from peskit.sim.cut import get_cut
 from peskit.sim.edc import get_edc
+
+__all__ = ["xrfit"]
 
 
 def test_edc():
