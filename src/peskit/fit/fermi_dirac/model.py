@@ -1,5 +1,4 @@
 import lmfit as lf
-import numpy as np
 
 from peskit.fit.fermi_dirac.function import fermi_dirac, fermi_dirac_linbkg_broad
 

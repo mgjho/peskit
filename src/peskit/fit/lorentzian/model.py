@@ -1,6 +1,6 @@
 import numpy as np
 from lmfit import Model
-from lmfit.models import COMMON_GUESS_DOC, COMMON_INIT_DOC, update_param_vals
+from lmfit.models import COMMON_INIT_DOC
 
 from peskit.fit.lorentzian.function import lorentzian
 

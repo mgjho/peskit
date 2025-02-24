@@ -3,33 +3,19 @@ from lmfit import CompositeModel
 from lmfit.models import LorentzianModel
 
 from peskit.common.function import convolve
-from peskit.fit.broadening.model import GaussianBroadeningModel
+from peskit.fit.broadening.model import GaussianKernel
 
 
 def test_convolve():
-    x = np.linspace(-10, 10, 200)
+    x = np.linspace(-10, 5, 200)
     lor_model = LorentzianModel()
-    gau_model = GaussianBroadeningModel()
+    gau_model = GaussianKernel()
     lor_b_model = CompositeModel(lor_model, gau_model, convolve)
-    lor_b = lor_b_model.eval(x=x, center=5.0, broadening=0.1)
-    expected_values = np.array(
-        [
-            0.00078413,
-            0.00085171,
-            0.00091974,
-            0.00098766,
-            0.00105497,
-            0.0011212,
-            0.00118595,
-            0.00124885,
-            0.00130964,
-            0.00136811,
-            0.00142412,
-            0.00147763,
-            0.00152865,
-            0.00157726,
-        ]
+    lor_b = lor_b_model.eval(x=x, center=-4, broadening=0.001)
+    expected_values = np.array([0.01015227, 0.01032643, 0.01051497, 0.01071859, 0.01093799, 0.01117391,
+                                0.01142709, 0.01169833, 0.01198842, 0.01229824, 0.01262871, 0.01298079,
+                                0.01335554, 0.01375409])
+
+    assert np.allclose(lor_b[:14], expected_values), (
+        f"Expected {expected_values}, but got {lor_b[:14]}"
     )
-    assert np.allclose(
-        lor_b[:14], expected_values
-    ), f"Expected {expected_values}, but got {lor_b[:14]}"

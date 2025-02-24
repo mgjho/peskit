@@ -3,7 +3,7 @@ import numpy as np
 from peskit.common.constant import S2PI, TINY
 
 
-def gaussian(
+def gaussian_kernel(
     x,
     resolution=1.0,
 ):
@@ -14,7 +14,7 @@ def gaussian(
 
     """
     amplitude = 1.0
-    center = 0.0
+    center = x.mean()
     return (amplitude / (max(TINY, S2PI * resolution))) * np.exp(
         -((1.0 * x - center) ** 2) / max(TINY, (2 * resolution**2))
     )
