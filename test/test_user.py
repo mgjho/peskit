@@ -11,4 +11,4 @@ def test_user():
     edc = get_edc()
     model = LorentzianModel(prefix="p_") * FermiDiracModel(prefix="f_")
     model = CompositeModel(model, GaussianKernel(), convolve)
-    fit_result = model.fit(x=edc.eV, data=edc, method="least_squares")
+    model.fit(x=edc.eV, data=edc, method="least_squares")

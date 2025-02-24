@@ -13,7 +13,6 @@ from peskit.common.constant import TINY
 
 
 def convolve(arr, kernel):
-    """Simple convolution of two arrays."""
     npts = min(arr.size, kernel.size)
     pad = np.ones(npts)
     tmp = np.concatenate((pad * arr[0], arr, pad * arr[-1]))

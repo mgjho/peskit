@@ -110,6 +110,7 @@ ignore = [
     "PLW2901", # Outer variable overwritten by inner target
     "ICN001",  # Import conventions
     "TRY003",  # Long exception messages
+    "B006",    # Do not use mutable defaults for parameters
     "D100",    # Missing docstring in public module
     "D101",    # Missing docstring in public class
     "D102",    # Missing docstring in public method

@@ -10,7 +10,6 @@ def fermi_dirac(
     center: float,
     temp: float,
 ) -> np.ndarray:
-    """Simple Fermi-dirac edge"""
     return 1.0 / (1.0 + np.exp((1.0 * x - center) / (temp * CONST_KB)))
 
 
