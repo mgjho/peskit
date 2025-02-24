@@ -1,6 +1,7 @@
 import lmfit as lf
 
-from peskit.fit.fermi_dirac.function import fermi_dirac, fermi_dirac_linbkg_broad
+from peskit.common.distribution import fermi_dirac
+from peskit.fit.fermi_dirac.function import fermi_dirac_linbkg_broad
 
 
 class FermiDiracModel(lf.Model):
