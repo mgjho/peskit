@@ -4,13 +4,6 @@ import numpy.typing as npt
 from peskit.common.constant import CONST_KB
 from peskit.common.function import do_convolve
 
-# def fermi_dirac(
-#     x: np.ndarray,
-#     center: float,
-#     temp: float,
-# ) -> np.ndarray:
-#     return 1.0 / (1.0 + np.exp((1.0 * x - center) / (temp * CONST_KB)))
-
 
 def fermi_dirac_linbkg(
     x: np.ndarray,

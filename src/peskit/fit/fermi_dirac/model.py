@@ -14,9 +14,11 @@ class FermiDiracModel(lf.Model):
         missing="drop",
         name=None,
         temp: float | None = None,
+        center: float | None = None,
         **kwargs,
     ):
         self.temp = temp
+        self.center = center
         """Defer to lmfit for initialization."""
         kwargs.update(
             {"prefix": prefix, "missing": missing, "independent_vars": independent_vars}
@@ -25,8 +27,14 @@ class FermiDiracModel(lf.Model):
         self._set_paramhints_prefix()
 
     def _set_paramhints_prefix(self):
-        self.set_param_hint("temp", value=10.0, min=0.0, max=300.0)
-        self.set_param_hint("center", value=0.0, min=-0.01, max=0.01)
+        if self.temp is None:
+            self.set_param_hint("temp", value=10.0, min=0.0, max=300.0)
+        else:
+            self.set_param_hint("temp", value=self.temp, vary=False)
+        if self.center is None:
+            self.set_param_hint("center", value=0.0, min=-0.05, max=0.05)
+        else:
+            self.set_param_hint("center", value=self.center, vary=False)
 
     def guess(self, data, x=None, **kwargs):
         pars = self.make_params()
@@ -34,7 +42,15 @@ class FermiDiracModel(lf.Model):
             pars[f"{self.prefix}temp"].set(value=10.0, min=0, max=300.0, vary=True)
         else:
             pars[f"{self.prefix}temp"].set(value=self.temp, vary=False)
-        pars[f"{self.prefix}center"].set(value=0, min=-1, max=1)
+        if self.center is None:
+            pars[f"{self.prefix}center"].set(value=0, min=-1, max=1)
+        else:
+            pars[f"{self.prefix}center"].set(value=self.center, vary=False)
+        # if self.temp is None:
+        #     pars[f"{self.prefix}temp"].set(value=10.0, min=0, max=300.0, vary=True)
+        # else:
+        #     pars[f"{self.prefix}temp"].set(value=self.temp, vary=False)
+        # pars[f"{self.prefix}center"].set(value=0, min=-1, max=1)
 
         return lf.models.update_param_vals(pars, self.prefix, **kwargs)
 
