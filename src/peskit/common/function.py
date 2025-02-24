@@ -5,7 +5,67 @@ import numba as nb
 import numpy as np
 import numpy.typing as npt
 
-from peskit.common.constant import S2PI, TINY
+from peskit.common.constant import TINY
+
+# def convolve(arr, kernel):
+#     kernel = kernel / np.sum(kernel)
+#     return np.convolve(arr, kernel, mode="same")
+
+
+def convolve(arr, kernel):
+    npts = min(arr.size, kernel.size)
+    pad = np.ones(npts)
+    tmp = np.concatenate((pad * arr[0], arr, pad * arr[-1]))
+    out = np.convolve(tmp, kernel, mode="valid")
+    noff = int((len(out) - npts) / 2)
+    return out[noff : noff + npts] / np.sum(kernel)
+
+
+# def convolve(arr, kernel):
+#     """Simple convolution of two arrays."""
+#     npts = min(arr.size, kernel.size)
+#     pad = np.ones(npts)
+#     tmp = np.concatenate((pad * arr[0], arr, pad * arr[-1]))
+#     out = np.convolve(tmp, kernel, mode="valid")
+#     noff = int((len(out) - npts) / 2)
+#     return out[noff : noff + npts]
+
+
+def add_noise(
+    intensity: npt.NDArray[np.float64],
+    count: int = int(1e5),
+) -> npt.NDArray[np.float64]:
+    """
+    Add Poisson noise to the given intensity array.
+
+    Parameters
+    ----------
+    intensity : npt.NDArray[np.float64] | npt.NDArray[np.float64, np.float64] | npt.NDArray[np.float64, np.float64, np.float64]
+        The intensity array to which noise will be added. Can be a 1D, 2D, or 3D array.
+
+    count : float, optional
+        The total count to normalize the intensity to before adding noise. Default is 1e4.
+
+    Returns
+    -------
+    npt.NDArray[np.float64]
+        The intensity array with added Poisson noise.
+
+    Notes
+    -----
+    If the intensity array contains complex numbers, it will be returned unchanged.
+    """
+    if np.iscomplexobj(intensity):
+        return intensity
+    if count is not None:
+        rng = np.random.default_rng(1)
+        # Normalize the intensity to sum to 1
+        scaling_factor = float(count / intensity.sum())
+        intensity = (
+            rng.poisson(intensity * scaling_factor, size=intensity.shape)
+            / scaling_factor
+        )
+    return intensity
 
 
 def do_convolve(
@@ -67,12 +127,8 @@ def _gen_kernel(
     x_pad = n_pad * delta_x
 
     extended = np.linspace(x[0] - x_pad, x[-1] + x_pad, 2 * n_pad + len(x))
-    gauss = (
-        delta_x
-        * np.exp(
-            -(np.linspace(-x_pad, x_pad, 2 * n_pad + 1) ** 2) / max(TINY, 2 * sigma**2)
-        )
-        / max(TINY, S2PI * sigma)
+    gauss = np.exp(
+        -(np.linspace(-x_pad, x_pad, 2 * n_pad + 1) ** 2) / max(TINY, 2 * sigma**2)
     )
-    return extended, gauss
+    gauss /= gauss.sum()
     return extended, gauss

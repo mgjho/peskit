@@ -1,7 +1,7 @@
 import lmfit as lf
 import xarray as xr
 
-from peskit.fit.fermi_dirac.model import FermiDiracModel
+from peskit.fit.fermi_dirac.model import FermiDiracLinbkgBroadModel
 
 
 def calibrate_fd(
@@ -37,7 +37,7 @@ def fit_fd(
     x = da[coord].sel({coord: slice(*coord_range)}).values
 
     # Fit the MDC area with Fermi Dirac Model
-    model = FermiDiracModel()
+    model = FermiDiracLinbkgBroadModel()
     params = model.guess(mdc_area, x=x)
     if temp is not None:
         params["temp"].set(value=temp, vary=False)
