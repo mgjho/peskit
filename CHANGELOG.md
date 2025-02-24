@@ -2,6 +2,8 @@
 
 ### ✨ Features
 
+- add Gaussian broadening (#6)
+- add EDC and cut simulation
 - add shirley background removal module
 
 ## v0.3.0 (2025-02-18)
