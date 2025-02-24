@@ -1,3 +1,9 @@
+## Unreleased
+
+### ✨ Features
+
+- add BroadeningModel for better spectral broadening handling (#7)
+
 ## v0.4.0 (2025-02-24)
 
 ### ✨ Features
