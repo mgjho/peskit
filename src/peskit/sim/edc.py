@@ -1,10 +1,11 @@
 import numpy as np
 import xarray as xr
-from scipy.ndimage import gaussian_filter1d
 
 from peskit.common.distribution import fermi_dirac
-from peskit.common.function import add_noise, convolve
+from peskit.common.function import convolve
 from peskit.fit.broadening.function import gaussian_kernel
+
+
 def get_edc() -> xr.DataArray:
     x = np.linspace(-0.1, 0.01, 200)
     self_energy = 0.05 * x - 1j * 0.05 * x**2 - 1j * 0.01

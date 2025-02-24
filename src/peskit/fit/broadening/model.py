@@ -1,6 +1,5 @@
 import lmfit as lf
 
-from peskit.common.constant import TINY
 from peskit.fit.broadening.function import gaussian_kernel
 
 

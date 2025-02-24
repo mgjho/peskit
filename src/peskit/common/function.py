@@ -7,10 +7,10 @@ import numpy.typing as npt
 
 from peskit.common.constant import TINY
 
-
 # def convolve(arr, kernel):
 #     kernel = kernel / np.sum(kernel)
 #     return np.convolve(arr, kernel, mode="same")
+
 
 def convolve(arr, kernel):
     """Simple convolution of two arrays."""
@@ -30,7 +30,6 @@ def convolve(arr, kernel):
 #     out = np.convolve(tmp, kernel, mode="valid")
 #     noff = int((len(out) - npts) / 2)
 #     return out[noff : noff + npts]
-
 
 
 def add_noise(
