@@ -334,7 +334,7 @@ def _proportional_colorbar(
 
     if mappable.colorbar is None:
         plt.colorbar(mappable=mappable, cax=cax, ax=ax, **kwargs)
-        mappable.colorbar = cast(matplotlib.colorbar.Colorbar, mappable.colorbar)
+        mappable.colorbar = cast("matplotlib.colorbar.Colorbar", mappable.colorbar)
 
     ticks = mappable.colorbar.get_ticks()
     if cax is None:
